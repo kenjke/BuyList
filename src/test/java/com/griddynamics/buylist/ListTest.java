@@ -1,5 +1,6 @@
 package com.griddynamics.buylist;
 
+import com.griddynamics.buylist.enums.*;
 import com.griddynamics.buylist.step.CommonStep;
 import com.griddynamics.buylist.step.ListStep;
 import com.griddynamics.buylist.step.MainActivityStep;
@@ -41,13 +42,14 @@ public class ListTest implements TestConstants {
     @TestCaseId("1")
     public void createListAndCheckThatTitleIsChanged() throws IOException, InterruptedException {
         CommonStep commonStep = new CommonStep(driver);
-        commonStep.enterName(LIST_NAMES.get(0), ENTER_NAME.get(0));
+        commonStep.enterName(ListNames.Apples.toString(), EnterNames.List.toString());
 
         MainActivityStep mainActivityStep = new MainActivityStep(driver);
         mainActivityStep.clickAddButton();
 
         ListStep listStep = new ListStep(driver);
-        baseAssertions.checkEqual(listStep.getTopicName(), LIST_NAMES.get(0), TOPIC_NAME_STEP + LIST_NAMES.get(0));
+        baseAssertions.checkEqual(listStep.getTopicName(), ListNames.Apples.toString(),
+                Steps.TopicName.toString() + ListNames.Apples.toString());
     }
 
     @Test(groups = "list")
@@ -55,23 +57,24 @@ public class ListTest implements TestConstants {
     @TestCaseId("2")
     public void createListAndCheckThatTotalIsChanged() throws IOException, InterruptedException {
         CommonStep commonStep = new CommonStep(driver);
-        commonStep.enterName(LIST_NAMES.get(0), ENTER_NAME.get(0));
+        commonStep.enterName(ListNames.Apples.toString(), EnterNames.List.toString());
 
         MainActivityStep mainActivityStep = new MainActivityStep(driver);
         mainActivityStep.clickAddButton();
 
         ListStep listStep = new ListStep(driver);
-        baseAssertions.checkEqual(listStep.getTopicName(), LIST_NAMES.get(0), TOPIC_NAME_STEP + LIST_NAMES.get(0));
+        baseAssertions.checkEqual(listStep.getTopicName(), ListNames.Apples.toString(),
+                Steps.TopicName.toString() + ListNames.Apples.toString());
         listStep.enterProductName(PRODUCT_NAME);
         listStep.enterPrice(PRICE);
         listStep.enterAmount(AMOUNT);
-        commonStep.takeOptionFromSpinner(SPINNER_NAMES.get(0), MEASURES_LIST.get(0));
+        commonStep.takeOptionFromSpinner(SpinnerNames.Measure.toString(), Measures.Bottles.toString());
         listStep.enterComment(PRODUCT_NAME);
-        commonStep.takeOptionFromSpinner(SPINNER_NAMES.get(1), CATEGORY_LIST.get(0));
+        commonStep.takeOptionFromSpinner(SpinnerNames.Category.toString(), Categories.PetProducts.toString());
         commonStep.clickAddButton();
 
         String expectedAmount = CommonUtil.getExpectedTotal(PRICE, AMOUNT);
-        baseAssertions.checkEqual(listStep.getTotal(), expectedAmount, TOTAL_STEP + expectedAmount);
+        baseAssertions.checkEqual(listStep.getTotal(), expectedAmount, Steps.Total.toString() + expectedAmount);
     }
 
     @Test(groups = "list")
@@ -79,20 +82,22 @@ public class ListTest implements TestConstants {
     @TestCaseId("3")
     public void createListsWithSimilarNames() throws IOException, InterruptedException {
         CommonStep commonStep = new CommonStep(driver);
-        commonStep.enterName(LIST_NAMES.get(3), ENTER_NAME.get(0));
+        commonStep.enterName(ListNames.ForDinner.toString(), EnterNames.List.toString());
         MainActivityStep mainActivityStep = new MainActivityStep(driver);
         mainActivityStep.clickAddButton();
         driver.hideKeyboard();
         driver.navigate().back();
-        baseAssertions.checkEqual(String.valueOf(driver.findElementsByAndroidUIAutomator("text(\"" + LIST_NAMES.get(3) + "\")").size()),
-                SIZES.get(1), SIZE_STEP + SIZES.get(1));
+        baseAssertions.checkEqual(String.valueOf(driver.findElementsByAndroidUIAutomator(
+                        String.format(Locators.TextUiAutomator.toString(), ListNames.ForDinner.toString())).size()),
+                Sizes.One.toString(), Steps.Size.toString() + Sizes.One.toString());
 
-        commonStep.enterName(LIST_NAMES.get(3), ENTER_NAME.get(0));
+        commonStep.enterName(ListNames.ForDinner.toString(), EnterNames.List.toString());
         mainActivityStep.clickAddButton();
         driver.hideKeyboard();
         driver.navigate().back();
-        baseAssertions.checkEqual(String.valueOf(driver.findElementsByAndroidUIAutomator("text(\"" + LIST_NAMES.get(3) + "\")").size()),
-                SIZES.get(2), SIZE_STEP + SIZES.get(2));
+        baseAssertions.checkEqual(String.valueOf(driver.findElementsByAndroidUIAutomator(
+                        String.format(Locators.TextUiAutomator.toString(), ListNames.ForDinner.toString())).size()),
+                Sizes.Two.toString(), Steps.Size.toString() + Sizes.Two.toString());
     }
 
     @Test(groups = "list")
@@ -100,19 +105,21 @@ public class ListTest implements TestConstants {
     @TestCaseId("4")
     public void createListAndChangeTitle() throws IOException, InterruptedException {
         CommonStep commonStep = new CommonStep(driver);
-        commonStep.enterName(LIST_NAMES.get(0), ENTER_NAME.get(0));
+        commonStep.enterName(ListNames.Apples.toString(), EnterNames.List.toString());
         MainActivityStep mainActivityStep = new MainActivityStep(driver);
         mainActivityStep.clickAddButton();
         driver.hideKeyboard();
         driver.navigate().back();
-        baseAssertions.checkEqual(String.valueOf(driver.findElementsByAndroidUIAutomator("text(\"" + LIST_NAMES.get(0) + "\")").size()),
-                SIZES.get(1), SIZE_STEP + SIZES.get(1));
+        baseAssertions.checkEqual(String.valueOf(driver.findElementsByAndroidUIAutomator(
+                        String.format(Locators.TextUiAutomator.toString(), ListNames.Apples.toString())).size()),
+                Sizes.One.toString(), Steps.Size.toString() + Sizes.One.toString());
 
         mainActivityStep.clickChangeButton();
-        mainActivityStep.changeListName(LIST_NAMES.get(0), LIST_NAMES.get(1));
+        mainActivityStep.changeListName(ListNames.Apples.toString(), ListNames.Bottles.toString());
         commonStep.clickOKButton();
-        baseAssertions.checkEqual(String.valueOf(driver.findElementsByAndroidUIAutomator("text(\"" + LIST_NAMES.get(1) + "\")").size()),
-                SIZES.get(1), SIZE_STEP + SIZES.get(1));
+        baseAssertions.checkEqual(String.valueOf(driver.findElementsByAndroidUIAutomator(
+                        String.format(Locators.TextUiAutomator.toString(), ListNames.Bottles.toString())).size()),
+                Sizes.One.toString(), Steps.Size.toString() + Sizes.One.toString());
     }
 
     @Test(groups = "list")
@@ -120,17 +127,19 @@ public class ListTest implements TestConstants {
     @TestCaseId("5")
     public void createListAndDeleteIt() throws IOException, InterruptedException {
         CommonStep commonStep = new CommonStep(driver);
-        commonStep.enterName(LIST_NAMES.get(2), ENTER_NAME.get(0));
+        commonStep.enterName(ListNames.Wishes.toString(), EnterNames.List.toString());
         MainActivityStep mainActivityStep = new MainActivityStep(driver);
         mainActivityStep.clickAddButton();
         driver.hideKeyboard();
         driver.navigate().back();
-        baseAssertions.checkEqual(String.valueOf(driver.findElementsByAndroidUIAutomator("text(\"" + LIST_NAMES.get(2) + "\")").size()),
-                SIZES.get(1), SIZE_STEP + SIZES.get(1));
+        baseAssertions.checkEqual(String.valueOf(driver.findElementsByAndroidUIAutomator(
+                        String.format(Locators.TextUiAutomator.toString(), ListNames.Wishes.toString())).size()),
+                Sizes.One.toString(), Steps.Size.toString() + Sizes.One.toString());
 
         mainActivityStep.clickDeleteButton();
         mainActivityStep.clickOKButtonByDriver();
-        baseAssertions.checkEqual(String.valueOf(driver.findElementsByAndroidUIAutomator("text(\"" + LIST_NAMES.get(2) + "\")").size()),
-                SIZES.get(0), SIZE_STEP + SIZES.get(0));
+        baseAssertions.checkEqual(String.valueOf(driver.findElementsByAndroidUIAutomator(
+                        String.format(Locators.TextUiAutomator.toString(), ListNames.Wishes.toString())).size()),
+                Sizes.Zero.toString(), Steps.Size.toString() + Sizes.Zero.toString());
     }
 }

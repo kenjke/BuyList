@@ -2,6 +2,8 @@ package com.griddynamics.buylist.step;
 
 import com.griddynamics.buylist.client.CommonClient;
 import com.griddynamics.buylist.client.ListClient;
+import com.griddynamics.buylist.enums.Locators;
+import com.griddynamics.buylist.enums.SpinnerNames;
 import com.griddynamics.buylist.util.CommonUtil;
 import com.griddynamics.buylist.util.TestConstants;
 import io.appium.java_client.android.AndroidDriver;
@@ -47,14 +49,13 @@ public class CommonStep implements TestConstants {
 
     @Step("Enter {0}.")
     public void takeOptionFromSpinner(String spinnerName, String name) throws IOException, InterruptedException {
-        if (spinnerName.equals(SPINNER_NAMES.get(0))) {
-            ListClient listClient = new ListClient(driver);
+        ListClient listClient = new ListClient(driver);
+        if (spinnerName.equals(SpinnerNames.Measure.toString())) {
             listClient.getMeasures().click();
-        } else if (spinnerName.equals(SPINNER_NAMES.get(1))) {
-            ListClient listClient = new ListClient(driver);
+        } else if (spinnerName.equals(SpinnerNames.Category.toString())) {
             listClient.getCategories().click();
         }
-        driver.findElement(By.xpath("//android.widget.CheckedTextView[@text='" + name + "']")).click();
+        driver.findElement(By.xpath(String.format(Locators.CheckedTextViewXpath.toString(), name))).click();
         CommonUtil.waitAndMakeScreenshot(driver);
     }
 }

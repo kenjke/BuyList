@@ -1,5 +1,6 @@
 package com.griddynamics.buylist;
 
+import com.griddynamics.buylist.enums.*;
 import com.griddynamics.buylist.step.CommonStep;
 import com.griddynamics.buylist.step.ListStep;
 import com.griddynamics.buylist.step.MainActivityStep;
@@ -45,14 +46,16 @@ public class SettingsTest implements TestConstants {
 
         MainActivityStep mainActivityStep = new MainActivityStep(driver);
         mainActivityStep.choosePointFromSettings(0);
-        baseAssertions.checkEqual(String.valueOf(driver.findElementsByAndroidUIAutomator("text(\"" + SORT_LIST.get(0) + "\")").size()),
-                SIZES.get(1), SIZE_STEP + SIZES.get(1));
+        baseAssertions.checkEqual(String.valueOf(driver.findElementsByAndroidUIAutomator(
+                        String.format(Locators.TextUiAutomator.toString(), SortList.ByCategory.toString())).size()),
+                Sizes.One.toString(), Steps.Size.toString() + Sizes.One.toString());
 
         SettingsStep settingsStep = new SettingsStep(driver);
-        settingsStep.chooseOptionByCoordinates(SORT_LIST_POINT, LINEAR_LAYOUT_WIDGET, true);
-        commonStep.takeOptionFromSpinner(SPINNER_NAMES.get(2), SORT_LIST.get(1));
-        baseAssertions.checkEqual(String.valueOf(driver.findElementsByAndroidUIAutomator("text(\"" + SORT_LIST.get(0) + "\")").size()),
-                SIZES.get(0), SIZE_STEP + SIZES.get(0));
+        settingsStep.clickOnLinearLayout(1, SpinnerNames.SortList.toString());
+        commonStep.takeOptionFromSpinner(SpinnerNames.SortList.toString(), SortList.ByAlphabet.toString());
+        baseAssertions.checkEqual(String.valueOf(driver.findElementsByAndroidUIAutomator(
+                        String.format(Locators.TextUiAutomator.toString(), SortList.ByCategory.toString())).size()),
+                Sizes.Zero.toString(), Steps.Size.toString() + Sizes.Zero.toString());
     }
 
     @Test(groups = "settings")
@@ -64,14 +67,16 @@ public class SettingsTest implements TestConstants {
 
         MainActivityStep mainActivityStep = new MainActivityStep(driver);
         mainActivityStep.choosePointFromSettings(0);
-        baseAssertions.checkEqual(String.valueOf(driver.findElementsByAndroidUIAutomator("text(\"" + CURRENCY_LIST.get(0) + "\")").size()),
-                SIZES.get(1), SIZE_STEP + SIZES.get(1));
+        baseAssertions.checkEqual(String.valueOf(driver.findElementsByAndroidUIAutomator(
+                        String.format(Locators.TextUiAutomator.toString(), Currencies.Funt.toString())).size()),
+                Sizes.One.toString(), Steps.Size.toString() + Sizes.One.toString());
 
         SettingsStep settingsStep = new SettingsStep(driver);
-        settingsStep.chooseOptionByCoordinates(CURRENCY_POINT, LINEAR_LAYOUT_WIDGET, true);
-        commonStep.takeOptionFromSpinner(SPINNER_NAMES.get(3), SORT_LIST.get(1));
-        baseAssertions.checkEqual(String.valueOf(driver.findElementsByAndroidUIAutomator("text(\"" + CURRENCY_LIST.get(0) + "\")").size()),
-                SIZES.get(0), SIZE_STEP + SIZES.get(0));
+        settingsStep.clickOnLinearLayout(2, SpinnerNames.Currency.toString());
+        commonStep.takeOptionFromSpinner(SpinnerNames.Currency.toString(), SortList.ByAlphabet.toString());
+        baseAssertions.checkEqual(String.valueOf(driver.findElementsByAndroidUIAutomator(
+                        String.format(Locators.TextUiAutomator.toString(), Currencies.Funt.toString())).size()),
+                Sizes.Zero.toString(), Steps.Size.toString() + Sizes.Zero.toString());
     }
 
     @Test(groups = "settings")
@@ -86,14 +91,15 @@ public class SettingsTest implements TestConstants {
 
         SettingsStep settingsStep = new SettingsStep(driver);
         settingsStep.scroll(CATEGORIES_LIST_TEXT_VIEW);
-        settingsStep.chooseOptionByCoordinates(CATEGORIES_LIST_POINT, LINEAR_LAYOUT_WIDGET, true);
+        settingsStep.clickOnLinearLayout(9, SpinnerNames.Category.toString());
 
         commonStep.clickAddButton();
-        commonStep.enterName(CATEGORY_LIST.get(1), ENTER_NAME.get(1));
+        commonStep.enterName(Categories.Fencing.toString(), EnterNames.Category.toString());
         commonStep.clickOKButton();
-        settingsStep.scroll(CATEGORY_LIST.get(1));
-        baseAssertions.checkEqual(String.valueOf(driver.findElementsByAndroidUIAutomator("text(\"" + CATEGORY_LIST.get(1) + "\")").size()),
-                SIZES.get(1), SIZE_STEP + SIZES.get(1));
+        settingsStep.scroll(Categories.Fencing.toString());
+        baseAssertions.checkEqual(String.valueOf(driver.findElementsByAndroidUIAutomator(
+                        String.format(Locators.TextUiAutomator.toString(), Categories.Fencing.toString())).size()),
+                Sizes.One.toString(), Steps.Size.toString() + Sizes.One.toString());
     }
 
     @Test(groups = "settings")
@@ -107,9 +113,9 @@ public class SettingsTest implements TestConstants {
         mainActivityStep.choosePointFromSettings(0);
 
         SettingsStep settingsStep = new SettingsStep(driver);
-        baseAssertions.checkEqual(settingsStep.getIsChecked(PRICE_POINT, CHECKBOX_WIDGET), TRUE_VALUE, CHECKED_OPTION_STEP);
-        settingsStep.chooseOptionByCoordinates(PRICE_POINT, CHECKBOX_WIDGET, true);
-        baseAssertions.checkEqual(settingsStep.getIsChecked(PRICE_POINT, CHECKBOX_WIDGET), FALSE_VALUE, UNCHECKED_OPTION_STEP);
+        baseAssertions.checkEqual(settingsStep.getIsChecked(), TRUE_VALUE, Steps.Checked.toString());
+        settingsStep.clickOnPrice();
+        baseAssertions.checkEqual(settingsStep.getIsChecked(), FALSE_VALUE, Steps.Unchecked.toString());
     }
 
     @Test(groups = "settings")
@@ -123,9 +129,10 @@ public class SettingsTest implements TestConstants {
         mainActivityStep.choosePointFromSettings(1);
 
         ListStep listStep = new ListStep(driver);
-        baseAssertions.checkEqual(listStep.getTopicName(), DEFAULT_LIST, TOPIC_NAME_STEP + DEFAULT_LIST);
+        baseAssertions.checkEqual(listStep.getTopicName(), DEFAULT_LIST, Steps.TopicName.toString() + DEFAULT_LIST);
         driver.navigate().back();
-        baseAssertions.checkEqual(String.valueOf(driver.findElementsByAndroidUIAutomator("text(\"" + DEFAULT_LIST + "\")").size()),
-                SIZES.get(0), SIZE_STEP + SIZES.get(0));
+        baseAssertions.checkEqual(String.valueOf(driver.findElementsByAndroidUIAutomator(
+                        String.format(Locators.TextUiAutomator.toString(), DEFAULT_LIST)).size()),
+                Sizes.Zero.toString(), Steps.Size.toString() + Sizes.Zero.toString());
     }
 }
